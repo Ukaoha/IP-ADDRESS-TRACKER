@@ -1,20 +1,24 @@
 "use strict";
+/*
+TODOS
+// select elements 
+fetch Api from geo.ipfy
+use the data and render it in the dom
+get lattitude and logitutude for the map 
+initialize map using leaflet 
+call all functions with event listener
+*/
 // https://geo.ipify.org/api/v2/country,city?apiKey=at_agqwm6oqAfQ5ngQRXSLnvlcU7qDSF&ipAddress=8.8.8.8
 
 const searchIp = document.querySelector(".userbtn");
 const ipContainer = document.querySelector('.container');
-// const ipAddressContainer = document.querySelector('.ipaddress');
-// const location = document.querySelector('.location');
-// const timezone = document.querySelector('.timezone');
-// const isp = document.querySelector('.isp');
 let lattitude;
 let longitutude;
-let zoom = 1;
+let domain;
+
 
 const mapDisplay = function(lattitude, longitutude){
   const map = L.map('map').setView([lattitude, longitutude], 13);
-  
-
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
@@ -22,19 +26,31 @@ const marker = L.marker([lattitude, longitutude]).addTo(map);
 
 }
 
-searchIp.addEventListener("click", function () {
+ 
+
+searchIp.addEventListener('click' , function() {
   let ipAddress = document.querySelector(".UserInput").value;
   fetch(
-    `https://geo.ipify.org/api/v2/country,city?apiKey=at_agqwm6oqAfQ5ngQRXSLnvlcU7qDSF&ipAddress=${ipAddress}`
-  )
-    .then((response) => response.json())
-    .then((data) => {
-        console.log(data);
-        ipData(data)
-        renderUsersData(data)
-        mapDisplay(lattitude,longitutude)
-    });
-});
+    `https://geo.ipify.org/api/v2/country,city,vpn?apiKey=at_agqwm6oqAfQ5ngQRXSLnvlcU7qDSF&domain=${ipAddress}`
+  ).then(function (response) {
+    if(response.status == 200) {
+      return response.json();
+    // } else {throw new Error('Please enter correct IP address or domain name') }
+    }else {
+     ipContainer.innerHTML = `<h3 class = 'error-message' style="text-align: center">Pls enter correct IP address or domain </h3>`
+
+    }
+  }).then((data) => {
+    console.log(data);
+    ipData(data)
+    renderUsersData(data)
+    mapDisplay(lattitude, longitutude)
+
+  }).catch((err) => {
+    console.log("Error: ", err.message);
+  })
+
+})
 
 const ipData = function(usersData) {
     lattitude = usersData.location.lat ;
