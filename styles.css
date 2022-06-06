@@ -50,7 +50,7 @@ label{
     padding: 12px;
     border-radius: .5rem;
     border: none;
-    font-weight: 400;
+    font-weight: 400m   ;
     font-size: 1rem;
     outline: none;
 }
@@ -100,10 +100,9 @@ label{
 .ip-info{
     margin-top: 20px;
 }
-/* .ip-info:not(:last-child)::after{ */
+
     .ip-info::after{
     content: '';
-    border-left-color: 2px hsl(0, 0%, 59%);
     width: 5px;
     height: 60px;
     background-color:2px hsl(0, 0%, 59%);
@@ -119,7 +118,7 @@ label{
 }
 #map{
     display: block;
-    height: 55vh;
+    height: 52vh;
     z-index: 0;
     /* background-size: cover; */
     margin: auto;
